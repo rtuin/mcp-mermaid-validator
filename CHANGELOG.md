@@ -1,3 +1,8 @@
+## **0.5.4**&emsp;<sub><sup>2025-03-17 ([4be7eaa...4daa1e1](https://github.com/rtuin/mcp-mermaid-validator/compare/4be7eaa478cfceab18c83300ecc28275229ae65a...4daa1e1e39c41b3e5e361771c2533776e1942634?diff=split))</sup></sub>
+
+*no relevant changes*
+<br>
+
 ## **0.5.3**&emsp;<sub><sup>2025-03-17 ([ec0f113...3789c10](https://github.com/rtuin/mcp-mermaid-validator/compare/ec0f113e63f0089fe0fd4f07f747b50465f9ebeb...3789c102ed7856d6b5c64260280954c53a86f64c?diff=split))</sup></sub>
 
 *no relevant changes*
