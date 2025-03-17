@@ -1,6 +1,6 @@
 {
   "name": "@rtuin/mcp-mermaid-validator",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "An MCP server that validates mermaid diagrams",
   "author": "Richard Tuin",
   "homepage": "https://github.com/rtuin/mcp-mermaid-validator",
