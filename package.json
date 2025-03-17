@@ -14,7 +14,7 @@
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write src/**/*.ts",
     "watch": "tsc --watch",
-    "version": "npm version $(npx git-conventional-commits version)",
+    "bump": "npm version $(npx git-conventional-commits version)",
     "changelog": "npx git-conventional-commits changelog --release $npm_package_version --file 'CHANGELOG.md'"
   },
   "dependencies": {
