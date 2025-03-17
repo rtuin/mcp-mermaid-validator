@@ -1,3 +1,11 @@
+## **0.5.2**&emsp;<sub><sup>2025-03-17 ([739f324...485b4bd](https://github.com/rtuin/mcp-mermaid-validator/compare/739f3240c2ff5326ef2eb89e5407f359e6e76de1...485b4bd386343f70c841c541c9878401cee374b3?diff=split))</sup></sub>
+
+### Bug Fixes
+
+- Add shebang to main\.ts ([0df2a72](https://github.com/rtuin/mcp-mermaid-validator/commit/0df2a726b27a5dcedcbde0f26d42a2e2d2c6d92a))
+
+<br>
+
 ## **0.5.1**&emsp;<sub><sup>2025-03-17 ([e9a5bf9...41f0e4f](https://github.com/rtuin/mcp-mermaid-validator/compare/e9a5bf91e4535f82fd975895dfa3f7b4bd485798...41f0e4f1c9e266733313d1deee20631f4390deb4?diff=split))</sup></sub>
 
 ### Bug Fixes
