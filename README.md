@@ -1,8 +1,6 @@
-# MCP Mermaid Validator
+# MCP Server: Mermaid Validator
 
-## Project Overview
-
-The MCP Mermaid Validator is a specialized tool that validates and renders [Mermaid](https://mermaid.js.org/) diagrams. It implements the Model Context Protocol (MCP) to provide diagram validation services to compatible clients.
+A Model Context Protocol server that validates and renders [Mermaid](https://mermaid.js.org/) diagrams. This server enables LLMs to validate and render Mermaid diagrams.
 
 ## Usage
 
@@ -153,62 +151,6 @@ The core functionality is implemented in `src/main.ts`. This component:
    - Direct dependency management
    - Simplified build process
 
-## Implementation Example
-
-```typescript
-// Example of the core validation function
-server.tool("validateMermaid",
-  "Validates a Mermaid diagram and returns the rendered SVG if valid",
-  { diagram: z.string() },
-  async ({ diagram }) => {
-    try {
-      // Use child_process.spawn to create a process and pipe the diagram to stdin
-      const { spawn } = require('child_process');
-      
-      const mmdc = spawn('npx', ['@mermaid-js/mermaid-cli', '-i', '/dev/stdin', '-o', '-', '-e', 'svg']);
-      
-      // Write the diagram to stdin and close it
-      mmdc.stdin.write(diagram);
-      mmdc.stdin.end();
-      
-      // Capture stdout (SVG content) and stderr (error messages)
-      let svgContent = '';
-      let errorOutput = '';
-      
-      mmdc.stdout.on('data', (data: Buffer) => {
-        svgContent += data.toString();
-      });
-      
-      mmdc.stderr.on('data', (data: Buffer) => {
-        errorOutput += data.toString();
-      });
-      
-      // Wait for the process to complete
-      await new Promise<void>((resolve, reject) => {
-        mmdc.on('close', (code: number) => {
-          if (code === 0) {
-            resolve();
-          } else {
-            reject(new Error(`mermaid-cli process exited with code ${code}${errorOutput ? '\n\nError details:\n' + errorOutput : ''}`));
-          }
-        });
-      });
-      
-      // Return success response with SVG
-      return {
-        content: [
-          { type: "text", text: "Mermaid diagram is valid" },
-          { type: "image", data: Buffer.from(svgContent).toString('base64'), mimeType: "image/svg+xml" }
-        ]
-      };
-    } catch (error) {
-      // Return error response
-      // ... error handling logic
-    }
-  }
-);
-```
-
 ## Build and Execution
 
 The application can be built and run using npm scripts:
@@ -221,7 +163,7 @@ npm install
 npm run build
 
 # Run locally (for development)
-node dist/main.js
+npx @modelcontextprotocol/inspector node dist/main.js
 
 # Format code
 npm run format
@@ -234,3 +176,12 @@ npm run watch
 ```
 
 The application runs as an MCP server that communicates via standard input/output, making it suitable for integration with MCP-compatible clients.
+
+## Release
+
+To release a new version, the following steps in order:
+
+- `npm run build`
+- `npm run bump`
+- `npm run changelog`
+- `npm publish --access public`
