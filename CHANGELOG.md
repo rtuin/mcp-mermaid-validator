@@ -1,3 +1,11 @@
+## **0.6.1**&emsp;<sub><sup>2025-04-04 ([bc42183...9c7201c](https://github.com/rtuin/mcp-mermaid-validator/compare/bc421836c37749129b19d03cfe0807932dad887e...9c7201c39ac3337d400e3711f665cb1d05f1e799?diff=split))</sup></sub>
+
+### Bug Fixes
+
+- Improve docs ([f961d3c](https://github.com/rtuin/mcp-mermaid-validator/commit/f961d3c411fee15305bca8bc45611d04b076764a))
+
+<br>
+
 ## **0.6.0**&emsp;<sub><sup>2025-04-04 ([ef5a30b...1c2f4f1](https://github.com/rtuin/mcp-mermaid-validator/compare/ef5a30bd9113e66358857d850f29bfc7b49f901c...1c2f4f151dfac955b761f67036371cc35340f771?diff=split))</sup></sub>
 
 ### Features
