@@ -1,3 +1,11 @@
+## **0.6.0**&emsp;<sub><sup>2025-04-04 ([ef5a30b...1c2f4f1](https://github.com/rtuin/mcp-mermaid-validator/compare/ef5a30bd9113e66358857d850f29bfc7b49f901c...1c2f4f151dfac955b761f67036371cc35340f771?diff=split))</sup></sub>
+
+### Features
+
+- Change output to png instead of svg since Cursor supports that ([36cdf1f](https://github.com/rtuin/mcp-mermaid-validator/commit/36cdf1f01754469ab7139b0951f53bfdc03be9f8))
+
+<br>
+
 ## **0.5.4**&emsp;<sub><sup>2025-03-17 ([4be7eaa...4daa1e1](https://github.com/rtuin/mcp-mermaid-validator/compare/4be7eaa478cfceab18c83300ecc28275229ae65a...4daa1e1e39c41b3e5e361771c2533776e1942634?diff=split))</sup></sub>
 
 *no relevant changes*
