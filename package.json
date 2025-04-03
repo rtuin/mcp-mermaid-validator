@@ -15,9 +15,10 @@
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write src/**/*.ts",
     "watch": "tsc --watch",
+    "run": "npm run build && node dist/main.js",
     "bump": "npm version $(npx git-conventional-commits version)",
     "changelog": "npx git-conventional-commits changelog --release $npm_package_version --file 'CHANGELOG.md'",
-    "inspector": "npm run build && npx @modelcontextprotocol/inspector node dist/main.js"
+    "inspector": "npm run build && npx @modelcontextprotocol/inspector@0.7.0 node dist/main.js"
   },
   "dependencies": {
     "@mermaid-js/mermaid-cli": "^11.4.2",

@@ -106,8 +106,8 @@ The core functionality is implemented in `src/main.ts`. This component:
       },
       {
         type: "image", 
-        data: string, // Base64-encoded SVG
-        mimeType: "image/svg+xml"
+        data: string, // Base64-encoded PNG
+        mimeType: "image/png"
       }
     ]
   }
@@ -136,17 +136,19 @@ The core functionality is implemented in `src/main.ts`. This component:
 
 1. **MCP Integration**: The project uses the Model Context Protocol to standardize the interface for AI tools, allowing seamless integration with compatible clients.
 
-2. **Child Process Approach**: The implementation uses Node.js child processes to interact with the Mermaid CLI, which provides:
+2. **PNG Output Format**: The implementation uses PNG as the default output format to ensure better compatibility with most MCP clients, particularly Cursor, which doesn't support SVG.
+
+3. **Child Process Approach**: The implementation uses Node.js child processes to interact with the Mermaid CLI, which provides:
    - Isolation between the main application and the rendering process
    - Ability to capture detailed error information
    - Proper handling of the rendering pipeline
 
-3. **Error Handling Strategy**: The implementation uses a nested try-catch structure to:
+4. **Error Handling Strategy**: The implementation uses a nested try-catch structure to:
    - Distinguish between validation errors (invalid diagram syntax) and system errors
    - Provide detailed error information to help users fix their diagrams
    - Ensure the service remains stable even when processing invalid input
 
-4. **Simple Project Structure**: The project uses a straightforward TypeScript project structure for:
+5. **Simple Project Structure**: The project uses a straightforward TypeScript project structure for:
    - Easy maintenance and understanding
    - Direct dependency management
    - Simplified build process

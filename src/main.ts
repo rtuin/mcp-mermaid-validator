@@ -8,7 +8,7 @@ import { z } from "zod";
 // Create an MCP server
 const server = new McpServer({
   name: "Mermaid Validator",
-  version: "1.0.0",
+  version: "0.6.0",
 });
 
 // Add a mermaid validation tool
@@ -27,19 +27,21 @@ server.tool(
           "-o",
           "-",
           "-e",
-          "svg",
+          "png",
+          "-b",
+          "transparent",
         ]);
 
         // Write the diagram to stdin and close it
         mmdc.stdin.write(diagram);
         mmdc.stdin.end();
 
-        // Capture stdout (SVG content) and stderr (error messages)
-        let svgContent = "";
+        // Capture stdout (PNG content) and stderr (error messages)
+        const pngChunks: Buffer[] = [];
         let errorOutput = "";
 
         mmdc.stdout.on("data", (data: Buffer) => {
-          svgContent += data.toString();
+          pngChunks.push(data);
         });
 
         mmdc.stderr.on("data", (data: Buffer) => {
@@ -70,6 +72,7 @@ server.tool(
         });
 
         // If we get here, the diagram is valid
+        const pngBuffer = Buffer.concat(pngChunks);
         return {
           content: [
             {
@@ -78,8 +81,8 @@ server.tool(
             },
             {
               type: "image",
-              data: Buffer.from(svgContent).toString("base64"),
-              mimeType: "image/svg+xml",
+              data: pngBuffer.toString("base64"),
+              mimeType: "image/png",
             },
           ],
         };

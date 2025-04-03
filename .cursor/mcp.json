@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "open-manus": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/rtuin/Sites/OpenManus",
+        "run",
+        "run_mcp_server.py"
+      ]
+    }
+  }
+}
