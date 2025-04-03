@@ -15,7 +15,7 @@ You can configure your MCP client to use the Mermaid Validator by adding it to y
       "command": "npx",
       "args": [
         "-y",
-        "@rtuin/mcp-mermaid-validator"
+        "@rtuin/mcp-mermaid-validator@latest"
       ]
     }
   }
@@ -28,7 +28,7 @@ You can configure your MCP client to use the Mermaid Validator by adding it to y
 
 This project is structured as a simple TypeScript Node.js application that:
 
-1. **Main Application**: A Node.js service that validates Mermaid diagrams and returns rendered SVG output
+1. **Main Application**: A Node.js service that validates Mermaid diagrams and returns rendered PNG output
 2. **MCP Integration**: Uses the Model Context Protocol SDK to expose functionality to MCP-compatible clients
 3. **Mermaid CLI Integration**: Leverages the Mermaid CLI tool to perform diagram validation and rendering
 
@@ -58,7 +58,7 @@ The core functionality is implemented in `src/main.ts`. This component:
 1. Creates an MCP server instance
 2. Registers a `validateMermaid` tool that accepts Mermaid diagram syntax
 3. Uses the Mermaid CLI to validate and render diagrams
-4. Returns validation results and rendered SVG (if valid)
+4. Returns validation results and rendered PNG (if valid)
 5. Handles error cases with appropriate error messages
 
 ### Data Flow
@@ -66,10 +66,10 @@ The core functionality is implemented in `src/main.ts`. This component:
 1. **Input**: Mermaid diagram syntax as a string
 2. **Processing**:
    - The diagram is passed to the Mermaid CLI via stdin
-   - The CLI validates the syntax and renders an SVG if valid
+   - The CLI validates the syntax and renders a PNG if valid
    - Output and errors are captured from stdout/stderr
 3. **Output**:
-   - Success: Text confirmation + rendered SVG as base64-encoded image
+   - Success: Text confirmation + rendered PNG as base64-encoded image
    - Failure: Error message with details about the validation failure
 
 ## Dependencies
@@ -90,7 +90,7 @@ The core functionality is implemented in `src/main.ts`. This component:
 
 ### validateMermaid Tool
 
-**Purpose**: Validates a Mermaid diagram and returns the rendered SVG if valid
+**Purpose**: Validates a Mermaid diagram and returns the rendered PNG if valid
 
 **Parameters**:
 - `diagram` (string): The Mermaid diagram syntax to validate
