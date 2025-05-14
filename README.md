@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/rtuin-mcp-mermaid-validator-badge.png)](https://mseep.ai/app/rtuin-mcp-mermaid-validator)
+
 # MCP Server: Mermaid Validator
 
 A Model Context Protocol server that validates and renders [Mermaid](https://mermaid.js.org/) diagrams. This server enables LLMs to validate and render Mermaid diagrams.
