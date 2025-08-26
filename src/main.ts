@@ -14,34 +14,47 @@ const server = new McpServer({
 // Add a mermaid validation tool
 server.tool(
   "validateMermaid",
-  "Validates a Mermaid diagram and returns the rendered SVG if valid",
-  { diagram: z.string() },
-  async ({ diagram }) => {
+  "Validates a Mermaid diagram and returns the rendered image (PNG or SVG) if valid",
+  { 
+    diagram: z.string(),
+    format: z.enum(["svg", "png"]).optional().default("png")
+  },
+  async ({ diagram, format = "png" }) => {
     try {
       try {
         // Use child_process.spawn to create a process and pipe the diagram to stdin
-        const mmdc = spawn("npx", [
+        const args = [
           "@mermaid-js/mermaid-cli",
           "-i",
           "/dev/stdin",
           "-o",
           "-",
           "-e",
-          "png",
-          "-b",
-          "transparent",
-        ]);
+          format,
+        ];
+        
+        // Add transparent background for PNG format
+        if (format === "png") {
+          args.push("-b", "transparent");
+        }
+        
+        const mmdc = spawn("npx", args);
 
         // Write the diagram to stdin and close it
         mmdc.stdin.write(diagram);
         mmdc.stdin.end();
 
-        // Capture stdout (PNG content) and stderr (error messages)
-        const pngChunks: Buffer[] = [];
+        // Capture stdout (image content) and stderr (error messages)
+        const outputChunks: Buffer[] = [];
+        let svgContent = "";
         let errorOutput = "";
 
         mmdc.stdout.on("data", (data: Buffer) => {
-          pngChunks.push(data);
+          if (format === "svg") {
+            svgContent += data.toString();
+          } else {
+            outputChunks.push(data);
+          }
         });
 
         mmdc.stderr.on("data", (data: Buffer) => {
@@ -72,20 +85,36 @@ server.tool(
         });
 
         // If we get here, the diagram is valid
-        const pngBuffer = Buffer.concat(pngChunks);
-        return {
-          content: [
-            {
-              type: "text",
-              text: "Mermaid diagram is valid",
-            },
-            {
-              type: "image",
-              data: pngBuffer.toString("base64"),
-              mimeType: "image/png",
-            },
-          ],
-        };
+        if (format === "svg") {
+          return {
+            content: [
+              {
+                type: "text",
+                text: "Mermaid diagram is valid",
+              },
+              {
+                type: "image",
+                data: Buffer.from(svgContent).toString("base64"),
+                mimeType: "image/svg+xml",
+              },
+            ],
+          };
+        } else {
+          const pngBuffer = Buffer.concat(outputChunks);
+          return {
+            content: [
+              {
+                type: "text",
+                text: "Mermaid diagram is valid",
+              },
+              {
+                type: "image",
+                data: pngBuffer.toString("base64"),
+                mimeType: "image/png",
+              },
+            ],
+          };
+        }
       } catch (validationError: unknown) {
         // The diagram is invalid
         const errorMessage =
