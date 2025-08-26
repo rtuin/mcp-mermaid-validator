@@ -1,3 +1,15 @@
+## **0.7.0**&emsp;<sub><sup>2025-08-26 ([62fdca7...94f7435](https://github.com/rtuin/mcp-mermaid-validator/compare/62fdca783cfe7f66dc8f4f2a71b0cad06350dd44...94f743519a980076dabb6a91218914e18b00da43?diff=split))</sup></sub>
+
+### Features
+
+- enhance validateMermaid tool to support output format selection \(PNG/SVG\) \(\#4\) ([6f6153f](https://github.com/rtuin/mcp-mermaid-validator/commit/6f6153f20dbff0b68fa79e60278c81ab7ae08d14))
+
+### Chores
+
+- August package update (#3) ([5c87df4](https://github.com/rtuin/mcp-mermaid-validator/commit/5c87df4a5ae9fb4c79c2ae0542608bc5171ea36c))
+
+<br>
+
 ## **0.6.2**&emsp;<sub><sup>2025-04-24 ([93a79e2...3556ea7](https://github.com/rtuin/mcp-mermaid-validator/compare/93a79e29dab0eef4030fa04f9e3b88068a5a1381...3556ea7b6c584a65bfbe74336864c8effbf849e0?diff=split))</sup></sub>
 
 *no relevant changes*
