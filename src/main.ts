@@ -23,12 +23,14 @@ server.tool(
     try {
       try {
         // Use child_process.spawn to create a process and pipe the diagram to stdin
+        // Read diagram from STDIN and write image to STDOUT.
+        // Use "-" instead of "/dev/stdin" for cross-platform compatibility (WSL, Windows, CI).
         const args = [
           "@mermaid-js/mermaid-cli",
           "-i",
-          "/dev/stdin",
+          "-", // read from stdin
           "-o",
-          "-",
+          "-", // write to stdout
           "-e",
           format,
         ];
@@ -38,7 +40,7 @@ server.tool(
           args.push("-b", "transparent");
         }
         
-        const mmdc = spawn("npx", args);
+        const mmdc = spawn("npx", args, { stdio: ["pipe", "pipe", "pipe"] });
 
         // Write the diagram to stdin and close it
         mmdc.stdin.write(diagram);
