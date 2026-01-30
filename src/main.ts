@@ -15,11 +15,12 @@ const server = new McpServer({
 server.tool(
   "validateMermaid",
   "Validates a Mermaid diagram and returns the rendered image (PNG or SVG) if valid",
-  { 
+  {
     diagram: z.string(),
-    format: z.enum(["svg", "png"]).optional().default("png")
+    format: z.enum(["svg", "png"]).optional().default("png"),
+    renderImage: z.boolean().optional().default(true)
   },
-  async ({ diagram, format = "png" }) => {
+  async ({ diagram, format = "png", renderImage = true }) => {
     try {
       try {
         // Use child_process.spawn to create a process and pipe the diagram to stdin
@@ -29,13 +30,14 @@ server.tool(
           "/dev/stdin",
           "-o",
           "-",
-          "-e",
-          format,
         ];
-        
-        // Add transparent background for PNG format
-        if (format === "png") {
-          args.push("-b", "transparent");
+
+        if (renderImage) {
+          args.push("-e", format);
+          // Add transparent background for PNG format
+          if (format === "png") {
+            args.push("-b", "transparent");
+          }
         }
         
         const mmdc = spawn("npx", args);
@@ -49,13 +51,18 @@ server.tool(
         let svgContent = "";
         let errorOutput = "";
 
-        mmdc.stdout.on("data", (data: Buffer) => {
-          if (format === "svg") {
-            svgContent += data.toString();
-          } else {
-            outputChunks.push(data);
-          }
-        });
+        if (renderImage) {
+          mmdc.stdout.on("data", (data: Buffer) => {
+            if (format === "svg") {
+              svgContent += data.toString();
+            } else {
+              outputChunks.push(data);
+            }
+          });
+        } else {
+          // Consume stdout to prevent blocking, but discard the output
+          mmdc.stdout.on("data", () => {});
+        }
 
         mmdc.stderr.on("data", (data: Buffer) => {
           errorOutput += data.toString();
@@ -85,6 +92,17 @@ server.tool(
         });
 
         // If we get here, the diagram is valid
+        if (!renderImage) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: "Mermaid diagram is valid",
+              },
+            ],
+          };
+        }
+
         if (format === "svg") {
           return {
             content: [

@@ -90,24 +90,37 @@ The core functionality is implemented in `src/main.ts`. This component:
 
 ### validateMermaid Tool
 
-**Purpose**: Validates a Mermaid diagram and returns the rendered PNG if valid
+**Purpose**: Validates a Mermaid diagram and optionally returns the rendered image if valid
 
 **Parameters**:
 - `diagram` (string): The Mermaid diagram syntax to validate
+- `format` (enum: "svg" | "png", optional, default: "png"): Output format for the rendered image
+- `renderImage` (boolean, optional, default: true): Whether to render and return the image. Set to `false` for validation-only mode
 
 **Return Value**:
-- Success:
+- Success (with `renderImage: true`, default):
   ```typescript
   {
     content: [
-      { 
-        type: "text", 
-        text: "Mermaid diagram is valid" 
+      {
+        type: "text",
+        text: "Mermaid diagram is valid"
       },
       {
-        type: "image", 
-        data: string, // Base64-encoded PNG
-        mimeType: "image/png"
+        type: "image",
+        data: string, // Base64-encoded PNG or SVG
+        mimeType: "image/png" | "image/svg+xml"
+      }
+    ]
+  }
+  ```
+- Success (with `renderImage: false`):
+  ```typescript
+  {
+    content: [
+      {
+        type: "text",
+        text: "Mermaid diagram is valid"
       }
     ]
   }
