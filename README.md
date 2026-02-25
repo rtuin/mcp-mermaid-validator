@@ -4,9 +4,21 @@ A Model Context Protocol server that validates and renders [Mermaid](https://mer
 
 ## Usage
 
-### Quick Start
+### Claude Code
 
-You can configure your MCP client to use the Mermaid Validator by adding it to your mcp servers file:
+```bash
+claude mcp add mermaid-validator -- npx -y @rtuin/mcp-mermaid-validator@latest
+```
+
+### Codex CLI
+
+```bash
+codex mcp add mermaid-validator -- npx -y @rtuin/mcp-mermaid-validator@latest
+```
+
+### Other MCP Clients
+
+Add the following to your MCP servers configuration file:
 
 ```json
 {
@@ -56,9 +68,9 @@ mcp-mermaid-validator/
 The core functionality is implemented in `src/main.ts`. This component:
 
 1. Creates an MCP server instance
-2. Registers a `validateMermaid` tool that accepts Mermaid diagram syntax
-3. Uses the Mermaid CLI to validate and render diagrams
-4. Returns validation results and rendered PNG (if valid)
+2. Registers a `validateMermaid` tool for syntax validation (text-only response)
+3. Registers a `renderMermaid` tool for validation + image rendering
+4. Uses the Mermaid CLI to validate and render diagrams
 5. Handles error cases with appropriate error messages
 
 ### Data Flow
@@ -66,11 +78,11 @@ The core functionality is implemented in `src/main.ts`. This component:
 1. **Input**: Mermaid diagram syntax as a string
 2. **Processing**:
    - The diagram is passed to the Mermaid CLI via stdin
-   - The CLI validates the syntax and renders a PNG if valid
+   - The CLI validates the syntax and renders an image if valid
    - Output and errors are captured from stdout/stderr
 3. **Output**:
-   - Success: Text confirmation + rendered PNG as base64-encoded image
-   - Failure: Error message with details about the validation failure
+   - `validateMermaid`: Text confirmation or error details
+   - `renderMermaid`: Text confirmation + rendered image (PNG/SVG) or error details
 
 ## Dependencies
 
@@ -90,7 +102,7 @@ The core functionality is implemented in `src/main.ts`. This component:
 
 ### validateMermaid Tool
 
-**Purpose**: Validates a Mermaid diagram and returns the rendered PNG if valid
+**Purpose**: Validates a Mermaid diagram syntax (text-only response, no image)
 
 **Parameters**:
 - `diagram` (string): The Mermaid diagram syntax to validate
@@ -100,15 +112,7 @@ The core functionality is implemented in `src/main.ts`. This component:
   ```typescript
   {
     content: [
-      { 
-        type: "text", 
-        text: "Mermaid diagram is valid" 
-      },
-      {
-        type: "image", 
-        data: string, // Base64-encoded PNG
-        mimeType: "image/png"
-      }
+      { type: "text", text: "Mermaid diagram is valid" }
     ]
   }
   ```
@@ -116,21 +120,32 @@ The core functionality is implemented in `src/main.ts`. This component:
   ```typescript
   {
     content: [
-      { 
-        type: "text", 
-        text: "Mermaid diagram is invalid" 
-      },
-      {
-        type: "text",
-        text: string // Error message
-      },
-      {
-        type: "text",
-        text: string // Detailed error output (if available)
-      }
+      { type: "text", text: "Mermaid diagram is invalid" },
+      { type: "text", text: string }, // Error message
+      { type: "text", text: string }  // Detailed error output (if available)
     ]
   }
   ```
+
+### renderMermaid Tool
+
+**Purpose**: Validates a Mermaid diagram and returns the rendered image (PNG or SVG) if valid
+
+**Parameters**:
+- `diagram` (string): The Mermaid diagram syntax to validate and render
+- `format` (string, optional): Output format — `"png"` (default) or `"svg"`
+
+**Return Value**:
+- Success:
+  ```typescript
+  {
+    content: [
+      { type: "text", text: "Mermaid diagram is valid" },
+      { type: "image", data: string, mimeType: "image/png" | "image/svg+xml" }
+    ]
+  }
+  ```
+- Failure: Same as `validateMermaid`
 
 ## Technical Decisions
 
@@ -178,6 +193,22 @@ npm run watch
 ```
 
 The application runs as an MCP server that communicates via standard input/output, making it suitable for integration with MCP-compatible clients.
+
+### Testing with Claude Code / Codex CLI
+
+To test a local build with Claude Code or Codex CLI, point the `mcp add` command at the built `dist/main.js` instead of the npm package:
+
+```bash
+npm run build
+
+# Claude Code
+claude mcp add mermaid-validator node /absolute/path/to/mcp-mermaid-validator/dist/main.js
+
+# Codex CLI
+codex mcp add mermaid-validator node /absolute/path/to/mcp-mermaid-validator/dist/main.js
+```
+
+Replace `/absolute/path/to/mcp-mermaid-validator` with the actual path to your local clone.
 
 ## Release
 
