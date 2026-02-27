@@ -187,3 +187,9 @@ To release a new version, the following steps in order:
 - `npm run bump`
 - `npm run changelog`
 - `npm publish --access public`
+
+
+## Troubleshooting
+
+- WSL/Windows stdin: Earlier versions invoked Mermaid CLI with `/dev/stdin`, which can fail on WSL with `ENXIO`. This server now uses `-` for stdin/stdout (`-i -` / `-o -`) to be portable across Linux/macOS/WSL/Windows.
+- Inspector working dir: When launching via the MCP Inspector, ensure the server path resolves (e.g. `npx @modelcontextprotocol/inspector npx -y @rtuin/mcp-mermaid-validator@latest` or use an absolute path to `dist/main.js`).
