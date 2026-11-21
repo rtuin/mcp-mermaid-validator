@@ -193,3 +193,4 @@ To release a new version, the following steps in order:
 
 - WSL/Windows stdin: Earlier versions invoked Mermaid CLI with `/dev/stdin`, which can fail on WSL with `ENXIO`. This server now uses `-` for stdin/stdout (`-i -` / `-o -`) to be portable across Linux/macOS/WSL/Windows.
 - Inspector working dir: When launching via the MCP Inspector, ensure the server path resolves (e.g. `npx @modelcontextprotocol/inspector npx -y @rtuin/mcp-mermaid-validator@latest` or use an absolute path to `dist/main.js`).
+- Chromium sandbox: on Ubuntu 23.10+ (AppArmor restricting unprivileged user namespaces) and in some containers, Mermaid CLI fails with `No usable sandbox!` / `Failed to launch the browser process`. Point `MERMAID_PUPPETEER_CONFIG` at a puppeteer config file such as `{"args": ["--no-sandbox"]}` (it is passed to `mmdc -p`). Only disable the sandbox for diagrams you trust. Such failures are reported as "could not be validated", not as an invalid diagram.
