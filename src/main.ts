@@ -35,6 +35,13 @@ server.tool(
           format,
         ];
         
+        // Optional puppeteer config (e.g. {"args":["--no-sandbox"]}), needed where
+        // Chromium cannot start its sandbox (Ubuntu 23.10+ AppArmor, containers).
+        const puppeteerConfig = process.env.MERMAID_PUPPETEER_CONFIG;
+        if (puppeteerConfig) {
+          args.push("-p", puppeteerConfig);
+        }
+
         // Add transparent background for PNG format
         if (format === "png") {
           args.push("-b", "transparent");
@@ -129,10 +136,17 @@ server.tool(
           "\n\nError details:\n",
         );
 
+        // A browser that cannot start says nothing about the diagram
+        const launchFailed = errorDetails.join("\n").includes(
+          "Failed to launch the browser",
+        );
+
         const errorContent: Array<{ type: "text"; text: string }> = [
           {
             type: "text",
-            text: "Mermaid diagram is invalid",
+            text: launchFailed
+              ? "Mermaid diagram could not be validated: the headless browser failed to start (see MERMAID_PUPPETEER_CONFIG in the README)"
+              : "Mermaid diagram is invalid",
           },
           {
             type: "text",
